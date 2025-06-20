@@ -1,0 +1,38 @@
+[package]
+name = "dioxus_form_test"
+version = "0.1.0"
+authors = ["Toofy <mostafa.alsari@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+dioxus = { version = "0.6.3", features = ["fullstack", "router"] }
+tokio = { version = "1.45.1", features = ["full"], optional = true }
+axum = { version = "0.7.9", optional = true }
+
+[features]
+default = ["web"]
+web = [
+    "dioxus/web",
+]
+desktop = ["dioxus/desktop", "dep:tokio"] # Desktop can use more tokio features
+mobile = ["dioxus/mobile", "dep:tokio"]   # Mobile can use more tokio features
+
+server = [
+    "dioxus/server",
+    "dep:tokio",
+    "tokio/rt-multi-thread",
+    "dep:axum"
+
+]
+axum = ["dep:axum"]
+
+[profile] # Keep your existing profiles
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"
